@@ -51,49 +51,26 @@ document.addEventListener('DOMContentLoaded', function () {
   var yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  /* ---------- Products: search + category filter ---------- */
+  /* ---------- Products: search ---------- */
   var searchInput = document.getElementById('productSearch');
-  var chips = document.querySelectorAll('.filter-chip');
-  var categories = document.querySelectorAll('.product-category');
+  var productChips = document.querySelectorAll('.product-chip');
   var noResults = document.getElementById('noResults');
 
   function applyFilters() {
     var query = (searchInput ? searchInput.value : '').trim().toLowerCase();
-    var activeChip = document.querySelector('.filter-chip.active');
-    var activeCat = activeChip ? activeChip.dataset.category : 'all';
     var anyVisible = false;
 
-    categories.forEach(function (cat) {
-      var catName = cat.dataset.category;
-      var catMatches = activeCat === 'all' || activeCat === catName;
-      var visibleInCat = 0;
-
-      cat.querySelectorAll('.product-chip').forEach(function (chip) {
-        var name = chip.dataset.name || '';
-        var matchesQuery = name.indexOf(query) !== -1;
-        var show = catMatches && matchesQuery;
-        chip.hidden = !show;
-        if (show) visibleInCat++;
-      });
-
-      cat.hidden = visibleInCat === 0;
-      if (visibleInCat > 0) anyVisible = true;
+    productChips.forEach(function (chip) {
+      var name = chip.dataset.name || '';
+      var show = name.indexOf(query) !== -1;
+      chip.hidden = !show;
+      if (show) anyVisible = true;
     });
 
     if (noResults) noResults.classList.toggle('show', !anyVisible);
   }
 
   if (searchInput) searchInput.addEventListener('input', applyFilters);
-
-  if (chips.length) {
-    chips.forEach(function (chip) {
-      chip.addEventListener('click', function () {
-        chips.forEach(function (c) { c.classList.remove('active'); });
-        chip.classList.add('active');
-        applyFilters();
-      });
-    });
-  }
 
   /* ---------- Contact form (Web3Forms AJAX submit) ---------- */
   var form = document.getElementById('contactForm');
