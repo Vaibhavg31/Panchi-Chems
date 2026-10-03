@@ -687,6 +687,8 @@ section { position: relative; }
   background: #fff;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
+  text-decoration: none;
+  cursor: pointer;
   padding: 28px 16px 22px;
   overflow: hidden;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
